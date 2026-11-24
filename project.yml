@@ -1,0 +1,38 @@
+name: VocalTune
+options:
+  bundleIdPrefix: com.example
+  deploymentTarget:
+    iOS: "18.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    CLANG_CXX_LANGUAGE_STANDARD: c++17
+    CLANG_CXX_LIBRARY: libc++
+    TARGETED_DEVICE_FAMILY: "1"
+    SWIFT_OBJC_BRIDGING_HEADER: App/Bridging-Header.h
+  configs:
+    Release:
+      GCC_OPTIMIZATION_LEVEL: "3"
+      SWIFT_OPTIMIZATION_LEVEL: "-O"
+targets:
+  VocalTune:
+    type: application
+    platform: iOS
+    sources:
+      - App
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: VocalTune
+        UILaunchScreen: {}
+        UIUserInterfaceStyle: Dark
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        NSMicrophoneUsageDescription: VocalTune cần micro để thu và chỉnh giọng hát của bạn.
+        UIBackgroundModes: [audio]
+        UIFileSharingEnabled: true
+        LSSupportsOpeningDocumentsInPlace: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.vocaltune
+        MARKETING_VERSION: "0.1.0"
+        CURRENT_PROJECT_VERSION: "1"

@@ -1,0 +1,28 @@
+workflows:
+  ios-unsigned:
+    name: VocalTune (IPA chưa ký)
+    instance_type: mac_mini_m2
+    max_build_duration: 30
+    environment:
+      xcode: latest
+    scripts:
+      - name: Test DSP trên host
+        script: |
+          clang++ -std=c++17 -O2 -Wall Tests/dsp_test.cpp App/DSP/VocalDSP.cpp -I App/DSP -o /tmp/dsp_test
+          /tmp/dsp_test
+      - name: Sinh project Xcode
+        script: |
+          brew install xcodegen
+          xcodegen generate
+      - name: Archive không ký
+        script: |
+          xcodebuild -project VocalTune.xcodeproj -scheme VocalTune -configuration Release \
+            -destination 'generic/platform=iOS' -archivePath build/VocalTune.xcarchive \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" archive
+      - name: Đóng gói IPA
+        script: |
+          mkdir -p build/Payload
+          cp -R build/VocalTune.xcarchive/Products/Applications/VocalTune.app build/Payload/
+          (cd build && zip -qry VocalTune.ipa Payload)
+    artifacts:
+      - build/VocalTune.ipa
